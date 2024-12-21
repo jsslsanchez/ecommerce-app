@@ -1,0 +1,123 @@
+import 'package:flutter/material.dart';
+
+class AlphanumericKeypad extends StatelessWidget {
+  final Function(String) onKeyPressed;
+
+  const AlphanumericKeypad({Key? key, required this.onKeyPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> numberKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+    final List<String> letterKeys = [
+      'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+      'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+      'Y', 'Z', '.', ',', 'Del'
+    ];
+
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      color: Colors.grey[200],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Fila superior con números
+          Container(
+            color: Colors.grey[300],
+            child: GridView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(), // Desactiva el scroll
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 10, // columnas para números
+                childAspectRatio: 1.0, // Proporción de ancho a alto
+              ),
+              itemCount: numberKeys.length,
+              itemBuilder: (context, index) {
+                final text = numberKeys[index];
+
+                return Container(
+                  margin: const EdgeInsets.all(4.0), // Margen entre botones
+                  child: ElevatedButton(
+                    onPressed: () => onKeyPressed(text),
+                    child: Text(
+                      text,
+                      style: TextStyle(fontSize: 14), // Tamaño del texto ajustado
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white, // Color de fondo
+                      foregroundColor: Colors.black, // Color del texto
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8), // Radio de borde
+                      ),
+                      padding: EdgeInsets.all(8.0), // Ajusta el padding
+                      elevation: 0, // Sin sombra
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(height: 2), // Espacio entre filas
+          // Fila inferior con letras
+          Container(
+            color: Colors.grey[100],
+            child: GridView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(), // Desactiva el scroll
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 10, // columnas para letras y botones adicionales
+                childAspectRatio: 1.0, // Proporción de ancho a alto
+              ),
+              itemCount: letterKeys.length,
+              itemBuilder: (context, index) {
+                final text = letterKeys[index];
+
+                // Aquí verificamos si el texto es 'Del' y usamos un ícono
+                if (text == 'Del') {
+                  return Container(
+                    margin: const EdgeInsets.all(4.0), // Margen entre botones
+                    child: ElevatedButton(
+                      onPressed: () => onKeyPressed('Del'),
+                      child: Icon(
+                        Icons.delete, // Icono de borrar
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red, // Color de fondo
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8), // Radio de borde
+                        ),
+                        padding: EdgeInsets.all(8.0), // Ajusta el padding
+                        elevation: 0, // Sin sombra
+                          ),
+                    ),
+                  );
+                }
+
+                return Container(
+                  margin: const EdgeInsets.all(4.0), // Margen entre botones
+                  child: ElevatedButton(
+                    onPressed: () => onKeyPressed(text),
+                    child: Text(
+                      text,
+                      style: TextStyle(fontSize: 14), // Tamaño del texto ajustado
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red, // Color de fondo
+                      foregroundColor: Colors.white, // Color del texto
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8), // Radio de borde
+                      ),
+                      padding: EdgeInsets.all(8.0), // Ajusta el padding
+                      elevation: 0, // Sin sombra
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
